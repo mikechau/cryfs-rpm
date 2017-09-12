@@ -17,8 +17,8 @@ install:
       docker load -i /home/travis/docker/latest_cache.tar.gz;
     fi
   - ./build.sh
-  - docker save cryfs | gzip > /home/travis/latest_image.tar.gz
-  - sudo `which buildcache` save -o /home/travis/latest_cache.tar.gz cryfs
+  - docker save cryfs | gzip > /home/travis/docker/latest_image.tar.gz
+  - sudo `which buildcache` save -o /home/travis/docker/latest_cache.tar.gz cryfs
   - sudo chown $USER /home/travis/docker/latest_cache.tar.gz
 script:
   - echo 'noop'
