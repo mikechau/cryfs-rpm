@@ -17,7 +17,8 @@ script:
   - if [[ ${TRAVIS_BRANCH} == "master" ]] || [[ ${TRAVIS_TAG} ]] && [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save $(docker history -q ${DOCKER_REPOSITORY}:${TRAVIS_COMMIT} | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
 deploy:
   provider: releases
-  api_key: "TOKEN"
+  api_key:
+    secure: "vhY6KLpKf9JASgHHBxuJUpLD1buT34zuijqt8VnLo/I1iJBLfo6QIWmUvSGqtmox3H/s6Hndt1EFmvvN5yFM5ILzskScK1s0iXITn/Bx9XrZcnuu3yy5eY2bcu/+1uDvYBKCmubjvgpWDg1CRw0v3lamnztH5cCV0lXKtS3n84Tm2Pm+VWwXIdHEieIOk2xXTkmnU9RmUzV+4Yv4/hIUVLOAYb6qv/Y4NWAiinnynnMhuU/K0RQFE+GhytTvk+kHNaa8vcuyIC7gc+7Di8WzeQcGhYcG7SY+aSrxpmph/0qxfYSU0zpbKCETqFrn52wcSznG4yqC4F+ZzurDn9gz3PAyIh0K4FARsa4GuoA1luPywdbBSSWbZkSVejro1Nwb3fh8hUhxCYbsAM3SG0q+3iT5r43npXzo26nhr9xsjZbmCvtgPFl9Zfz/pevzGG2SFTFqL8IknVzIHBIfK/UmIRnZMcJznNb/BeAYVbx2E6rZBmzbnkvSdEgsRRT4mC+Thny6I7xP5zopSZK37pk+HC4TKZvZSNh1Lc0fR6z47NwgIzJEk1eP658avt9bRs8rkkD97WxAsoM+Qo8ZQolL0wVEGQXLLxBsmNB69SC6Xjb3T9mbjyxSlxJQImdfuJcfRv5SAOWsFZzR6mr6IioQRdyAnITazIRE2MBqr54NrEQ="
   file_glob: true
   file: dist/*
   skip_cleanup: true
