@@ -2,26 +2,8 @@
 sudo: required
 services:
   - docker
-language: go
-cache:
-  directories:
-    - /home/travis/docker
-before_install:
-  - go get github.com/tonistiigi/buildcache/cmd/buildcache
-  - mkdir -p /home/travis/docker
-install:
-  - if [ -e docker/latest_image.tar.gz ]; then
-      docker load -i /home/travis/docker/latest_image.tar.gz;
-    fi
-  - if [ -e docker/latest_cache.tar.gz ]; then
-      docker load -i /home/travis/docker/latest_cache.tar.gz;
-    fi
-  - ./build.sh
-  - docker save cryfs | gzip > /home/travis/docker/latest_image.tar.gz
-  - sudo `which buildcache` save -o /home/travis/docker/latest_cache.tar.gz cryfs
-  - sudo chown $USER /home/travis/docker/latest_cache.tar.gz
 script:
-  - echo 'noop'
+  - ./build.sh
 deploy:
   provider: releases
   api_key:
