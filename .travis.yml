@@ -2,19 +2,26 @@
 sudo: required
 services:
   - docker
-language: python
+language: go
 cache:
   directories:
-    - /home/travis/docker/
-env:
-  global:
-    - DOCKER_CACHE_FILE=/home/travis/docker/cache.tar.gz
+    - /home/travis/docker
 before_install:
-  - docker --version
-  - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
-script:
+  - go get github.com/tonistiigi/buildcache/cmd/buildcache
+  - mkdir -p /home/travis/docker
+install:
+  - if [ -e docker/latest_image.tar.gz ]; then
+      docker load -i /home/travis/docker/latest_image.tar.gz;
+    fi
+  - if [ -e docker/latest_cache.tar.gz ]; then
+      docker load -i /home/travis/docker/latest_cache.tar.gz;
+    fi
   - ./build.sh
-  - if [[ ${TRAVIS_BRANCH} == "master" ]] || [[ ${TRAVIS_TAG} ]] && [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save cryfs | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
+  - docker save cryfs | gzip > /home/travis/latest_image.tar.gz
+  - sudo `which buildcache` save -o /home/travis/latest_cache.tar.gz cryfs
+  - sudo chown $USER /home/travis/docker/latest_cache.tar.gz
+script:
+  - echo 'noop'
 deploy:
   provider: releases
   api_key:
