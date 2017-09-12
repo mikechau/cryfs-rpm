@@ -9,7 +9,7 @@ cache:
 env:
   global:
     - DOCKER_CACHE_FILE=/home/travis/docker/cache.tar.gz
-before_install:
+install:
   - docker --version
   - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
 script:
